@@ -108,36 +108,34 @@ h3,
 
 /* Gallery/Art Section */
 .masonry-grid {
-  column-count: 1;
-  column-gap: 1.5rem;
-  transition: opacity 0.3s ease-in-out;
   width: 100%;
+  margin: 0 auto;
+  transition: opacity 0.4s ease-in-out;
 }
 
-/* Responsive column adjustments */
+/* Masonry Item sizing */
+.masonry-item {
+  width: 100%;
+  padding: 0.75rem; /* Gap between items */
+}
+
+/* Responsive column adjustments via script and CSS */
 @media (min-width: 768px) {
-  .masonry-grid {
-    column-count: 2;
+  .masonry-item {
+    width: 50%;
   }
 }
 
 @media (min-width: 992px) {
-  .masonry-grid {
-    column-count: 3;
+  .masonry-item {
+    width: 33.333%;
   }
 }
 
 @media (min-width: 1400px) {
-  .masonry-grid {
-    column-count: 4;
+  .masonry-item {
+    width: 25%;
   }
-}
-
-.masonry-item {
-  break-inside: avoid;
-  margin-bottom: 1.5rem;
-  display: inline-block;
-  width: 100%;
 }
 
 .gallery-item {

@@ -39,18 +39,6 @@ const artworks = [
     downloadable: false,
   },
   {
-    id: 4,
-    title: "Ulab",
-    category: "Landscape",
-    imageThumb: asset("./assets/thumbs/thumb-Ulab.webp"),
-    imageFull: asset("./assets/img/Ulab.jpg"),
-    description:
-      "Illustration of University Laboratory College (ULAB), IER, DU.",
-    year: "2026",
-    medium: "Digital",
-    downloadable: true,
-  },
-  {
     id: 5,
     title: "Block Blur",
     category: "Abstract",
@@ -61,7 +49,6 @@ const artworks = [
     medium: "Digital",
     downloadable: false,
   },
-
   {
     id: 6,
     title: "Block Tree Blur",
@@ -72,6 +59,18 @@ const artworks = [
     year: "2026",
     medium: "Digital",
     downloadable: false,
+  },
+  {
+    id: 4,
+    title: "Ulab",
+    category: "Landscape",
+    imageThumb: asset("./assets/thumbs/thumb-Ulab.webp"),
+    imageFull: asset("./assets/img/Ulab.jpg"),
+    description:
+      "Illustration of University Laboratory College (ULAB), IER, DU.",
+    year: "2026",
+    medium: "Digital",
+    downloadable: true,
   },
 ];
 
@@ -100,6 +99,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const artworkModalElement = document.getElementById("artworkModal");
 
   if (!filterContainer || !galleryContainer) return;
+
+  // Initial Masonry instance
+  let msnry;
 
   // grab unique categories from my artwork array
   const categories = ["all", ...new Set(artworks.map((art) => art.category))];
@@ -155,7 +157,19 @@ document.addEventListener("DOMContentLoaded", () => {
         galleryContainer.appendChild(itemWrapper);
       });
 
-      galleryContainer.style.opacity = "1";
+      // Initialize or reload Masonry after items are added
+      if (msnry) {
+        msnry.destroy(); // Destroy previous instance to avoid layout conflicts
+      }
+
+      imagesLoaded(galleryContainer, () => {
+        msnry = new Masonry(galleryContainer, {
+          itemSelector: ".masonry-item",
+          percentPosition: true,
+          transitionDuration: "0.4s",
+        });
+        galleryContainer.style.opacity = "1";
+      });
     }, 300);
   }
 
