@@ -17,17 +17,6 @@ const artworks = [
   },
   {
     id: 2,
-    title: "Block Blur",
-    category: "Abstract",
-    imageThumb: asset("./assets/thumbs/thumb-Block-blur.webp"),
-    imageFull: asset("./assets/img/Block-blur.jpg"),
-    description: "Same as the original, but with a blurred effect.",
-    year: "2026",
-    medium: "Digital",
-    downloadable: false,
-  },
-  {
-    id: 3,
     title: "Block Paint",
     category: "Abstract",
     imageThumb: asset("./assets/thumbs/thumb-Block-paint.webp"),
@@ -38,7 +27,7 @@ const artworks = [
     downloadable: false,
   },
   {
-    id: 4,
+    id: 3,
     title: "Block Tree",
     category: "Abstract",
     imageThumb: asset("./assets/thumbs/thumb-Block-tree.webp"),
@@ -50,7 +39,31 @@ const artworks = [
     downloadable: false,
   },
   {
+    id: 4,
+    title: "Ulab",
+    category: "Landscape",
+    imageThumb: asset("./assets/thumbs/thumb-Ulab.webp"),
+    imageFull: asset("./assets/img/Ulab.jpg"),
+    description:
+      "Illustration of University Laboratory College (ULAB), IER, DU.",
+    year: "2026",
+    medium: "Digital",
+    downloadable: true,
+  },
+  {
     id: 5,
+    title: "Block Blur",
+    category: "Abstract",
+    imageThumb: asset("./assets/thumbs/thumb-Block-blur.webp"),
+    imageFull: asset("./assets/img/Block-blur.jpg"),
+    description: "Same as the original, but with a blurred effect.",
+    year: "2026",
+    medium: "Digital",
+    downloadable: false,
+  },
+
+  {
+    id: 6,
     title: "Block Tree Blur",
     category: "Abstract",
     imageThumb: asset("./assets/thumbs/thumb-Block-tree-blur.webp"),

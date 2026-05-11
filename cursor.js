@@ -1,7 +1,7 @@
 const cursorDot = document.querySelector("[data-cursor-dot]");
 const cursorOutline = document.querySelector("[data-cursor-outline]");
 
-const hoverSelector = "a, button, img, .download-btn, [data-cursor-grow]";
+const hoverSelector = "a, button, img, .gallery-overlay,.download-btn, [data-cursor-grow]";
 
 window.addEventListener("mousemove", (e) => {
   const posX = e.clientX;
