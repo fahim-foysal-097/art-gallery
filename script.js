@@ -1,11 +1,14 @@
 // artwork database, add a new block here to update the site
+const asset = (path) => new URL(path, window.location.href).href;
+
+// artwork database, add a new block here to update the site
 const artworks = [
   {
     id: 1,
     title: "Block",
     category: "Abstract",
-    imageThumb: "/assets/thumbs/thumb-Block.webp",
-    imageFull: "/assets/img/Block.jpg",
+    imageThumb: asset("./assets/thumbs/thumb-Block.webp"),
+    imageFull: asset("./assets/img/Block.jpg"),
     description:
       "An exploration of form and color, this piece uses simple geometric shapes to create a visually striking composition.",
     year: "2026",
@@ -16,8 +19,8 @@ const artworks = [
     id: 2,
     title: "Block Blur",
     category: "Abstract",
-    imageThumb: "/assets/thumbs/thumb-Block-blur.webp",
-    imageFull: "/assets/img/Block-blur.jpg",
+    imageThumb: asset("./assets/thumbs/thumb-Block-blur.webp"),
+    imageFull: asset("./assets/img/Block-blur.jpg"),
     description: "Same as the original, but with a blurred effect.",
     year: "2026",
     medium: "Digital",
@@ -27,8 +30,8 @@ const artworks = [
     id: 3,
     title: "Block Paint",
     category: "Abstract",
-    imageThumb: "/assets/thumbs/thumb-Block-paint.webp",
-    imageFull: "/assets/img/Block-paint.jpg",
+    imageThumb: asset("./assets/thumbs/thumb-Block-paint.webp"),
+    imageFull: asset("./assets/img/Block-paint.jpg"),
     description: "Same as the original, but with done with oil paints.",
     year: "2026",
     medium: "Digital",
@@ -38,8 +41,8 @@ const artworks = [
     id: 4,
     title: "Block Tree",
     category: "Abstract",
-    imageThumb: "/assets/thumbs/thumb-Block-tree.webp",
-    imageFull: "/assets/img/Block-tree.jpg",
+    imageThumb: asset("./assets/thumbs/thumb-Block-tree.webp"),
+    imageFull: asset("./assets/img/Block-tree.jpg"),
     description:
       "A simple yet elegant composition of a tree with block elements.",
     year: "2026",
@@ -50,8 +53,8 @@ const artworks = [
     id: 5,
     title: "Block Tree Blur",
     category: "Abstract",
-    imageThumb: "/assets/thumbs/thumb-Block-tree-blur.webp",
-    imageFull: "/assets/img/Block-tree-blur.jpg",
+    imageThumb: asset("./assets/thumbs/thumb-Block-tree-blur.webp"),
+    imageFull: asset("./assets/img/Block-tree-blur.jpg"),
     description: "Same as the original, but with a blurred effect.",
     year: "2026",
     medium: "Digital",
