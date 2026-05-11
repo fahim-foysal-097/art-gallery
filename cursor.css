@@ -8,8 +8,8 @@
 
 /* Custom Cursor */
 .cursor-dot {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   background: #fff;
   border-radius: 50%;
   position: fixed;
@@ -42,9 +42,9 @@
 }
 
 .cursor-outline.hover {
-  width: 68px;
-  height: 68px;
-  transform: translate(-50%, -50%) scale(1.05);
+  width: 70px;
+  height: 70px;
+  transform: translate(-50%, -50%);
 }
 
 @media (max-width: 768px) {

@@ -1,6 +1,8 @@
 const cursorDot = document.querySelector("[data-cursor-dot]");
 const cursorOutline = document.querySelector("[data-cursor-outline]");
 
+const hoverSelector = "a, button, img, .download-btn, [data-cursor-grow]";
+
 window.addEventListener("mousemove", (e) => {
   const posX = e.clientX;
   const posY = e.clientY;
@@ -15,21 +17,27 @@ window.addEventListener("mousemove", (e) => {
       top: `${posY}px`,
     },
     {
-      duration: 180,
+      duration: 500,
       fill: "forwards",
     },
   );
 });
 
-// Hover effects
-const interactiveElements = document.querySelectorAll("a, button");
+// Grow cursor on hover using delegation
+document.addEventListener("mouseover", (e) => {
+  const target = e.target.closest(hoverSelector);
+  if (!target) return;
 
-interactiveElements.forEach((el) => {
-  el.addEventListener("mouseenter", () => {
-    cursorOutline.classList.add("hover");
-  });
+  cursorOutline.classList.add("hover");
+});
 
-  el.addEventListener("mouseleave", () => {
-    cursorOutline.classList.remove("hover");
-  });
+// Remove grow only when truly leaving the hovered element
+document.addEventListener("mouseout", (e) => {
+  const from = e.target.closest(hoverSelector);
+  if (!from) return;
+
+  const to = e.relatedTarget;
+  if (to && to.closest && to.closest(hoverSelector)) return;
+
+  cursorOutline.classList.remove("hover");
 });
