@@ -74,6 +74,64 @@ const artworks = [
   },
 ];
 
+function renderGallery(filter = "all") {
+  galleryContainer.style.opacity = "0";
+
+  setTimeout(() => {
+    galleryContainer.innerHTML = "";
+
+    const filteredArt =
+      filter === "all"
+        ? artworks
+        : artworks.filter((art) => art.category === filter);
+
+    filteredArt.forEach((art) => {
+      const itemWrapper = document.createElement("div");
+      itemWrapper.className = "masonry-item";
+
+      itemWrapper.innerHTML = `
+            <div class="gallery-item" 
+                 data-tilt 
+                 data-tilt-max="10" 
+                 data-tilt-speed="400" 
+                 data-tilt-glare="true" 
+                 data-tilt-max-glare="0.3">
+                <div class="gallery-img-container">
+                    <img src="${art.imageThumb}" alt="${art.title}" class="gallery-img" loading="lazy">
+                </div>
+                <div class="gallery-overlay">
+                    <p class="gallery-category">${art.category}</p>
+                    <h3 class="gallery-title">${art.title}</h3>
+                </div>
+            </div>
+        `;
+
+      itemWrapper
+        .querySelector(".gallery-item")
+        .addEventListener("click", () => {
+          if (modalInstance) openModal(art);
+        });
+
+      galleryContainer.appendChild(itemWrapper);
+    });
+
+    if (msnry) msnry.destroy();
+
+    imagesLoaded(galleryContainer, () => {
+      msnry = new Masonry(galleryContainer, {
+        itemSelector: ".masonry-item",
+        percentPosition: true,
+        transitionDuration: "0.4s",
+      });
+
+      // --- INITIALIZE TILT HERE ---
+      VanillaTilt.init(document.querySelectorAll(".gallery-item"));
+
+      galleryContainer.style.opacity = "1";
+    });
+  }, 300);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   // update the footer year
   const currentYearElement = document.getElementById("current-year");
@@ -136,17 +194,23 @@ document.addEventListener("DOMContentLoaded", () => {
         const itemWrapper = document.createElement("div");
         itemWrapper.className = "masonry-item";
 
+        // apply the tilt to the inner div, NOT the masonry-item
         itemWrapper.innerHTML = `
-                            <div class="gallery-item" data-id="${art.id}">
-                                <div class="gallery-img-container">
-                                    <img src="${art.imageThumb}" alt="${art.title}" class="gallery-img" loading="lazy">
-                                </div>
-                                <div class="gallery-overlay">
-                                    <p class="gallery-category">${art.category}</p>
-                                    <h3 class="gallery-title">${art.title}</h3>
-                                </div>
-                            </div>
-                        `;
+            <div class="gallery-item" 
+                 data-tilt 
+                 data-tilt-max="10" 
+                 data-tilt-speed="400" 
+                 data-tilt-glare="true" 
+                 data-tilt-max-glare="0.2">
+                <div class="gallery-img-container">
+                    <img src="${art.imageThumb}" alt="${art.title}" class="gallery-img" loading="lazy">
+                </div>
+                <div class="gallery-overlay">
+                    <p class="gallery-category">${art.category}</p>
+                    <h3 class="gallery-title">${art.title}</h3>
+                </div>
+            </div>
+        `;
 
         itemWrapper
           .querySelector(".gallery-item")
@@ -157,17 +221,25 @@ document.addEventListener("DOMContentLoaded", () => {
         galleryContainer.appendChild(itemWrapper);
       });
 
-      // Initialize or reload Masonry after items are added
+      // Cleanup previous Masonry if it exists
       if (msnry) {
-        msnry.destroy(); // Destroy previous instance to avoid layout conflicts
+        msnry.destroy();
       }
 
+      // Wait for images to load so Masonry knows the heights
       imagesLoaded(galleryContainer, () => {
         msnry = new Masonry(galleryContainer, {
           itemSelector: ".masonry-item",
           percentPosition: true,
           transitionDuration: "0.4s",
         });
+
+        // IMPORTANT: Re-initialize Tilt only AFTER Masonry has set positions
+        const tiltElements = document.querySelectorAll(".gallery-item");
+        if (typeof VanillaTilt !== "undefined") {
+          VanillaTilt.init(tiltElements);
+        }
+
         galleryContainer.style.opacity = "1";
       });
     }, 300);

@@ -111,12 +111,15 @@ h3,
   width: 100%;
   margin: 0 auto;
   transition: opacity 0.4s ease-in-out;
+  /* Allows children to have 3D depth */
+  transform-style: preserve-3d;
+  perspective: 1000px;
 }
 
-/* Masonry Item sizing */
 .masonry-item {
   width: 100%;
-  padding: 0.75rem; /* Gap between items */
+  padding: 10px; /* Space between cards */
+  break-inside: avoid;
 }
 
 /* Responsive column adjustments via script and CSS */
@@ -144,20 +147,19 @@ h3,
   /* Enhanced Bento box rounding */
   border: 1px solid rgba(255, 255, 255, 0.08);
   /* Subtle border for bento aesthetic */
-  overflow: hidden;
   background-color: var(--secondary-bg);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  transition:
-    transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-    box-shadow 0.4s ease;
+  overflow: hidden;
   cursor: pointer;
+  /* This ensures the tilt doesn't fight with Masonry's positioning */
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
 .gallery-item:hover {
-  transform: translateY(-6px) scale(1.02);
-  /* Snappier pop animation */
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.6);
 }
+
+/* ... existing styles ... */
 
 .gallery-img-container {
   width: 100%;
@@ -192,13 +194,15 @@ h3,
   );
   padding: 3rem 1.5rem 1.5rem;
   opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.4s ease;
+  transform: translateZ(40px) translateY(10px);
+  transition:
+    transform 0.4s ease,
+    opacity 0.4s ease;
 }
 
 .gallery-item:hover .gallery-overlay {
+  transform: translateZ(60px) translateY(0);
   opacity: 1;
-  transform: translateY(0);
 }
 
 .gallery-title {
