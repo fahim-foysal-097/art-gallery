@@ -683,6 +683,11 @@ code {
   letter-spacing: 0.12em;
 }
 
+.game-stat-best {
+  border-color: rgba(212, 175, 55, 0.28);
+  background: rgba(212, 175, 55, 0.06);
+}
+
 .game-board {
   display: grid;
   gap: 10px;
@@ -705,8 +710,7 @@ code {
 }
 
 .game-tile:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 22px rgba(0, 0, 0, 0.24);
+  transform: none;
 }
 
 .game-tile.correct {

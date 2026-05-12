@@ -43,14 +43,39 @@ document.addEventListener("DOMContentLoaded", () => {
     progressRaf: 0,
     activeSpotlight: null,
     gameTimer: null,
+    gameRoundTimer: null,
     gameActive: false,
     gameLocked: false,
     gameTimeTotal: 35,
     gameTimeLeft: 35,
     gameScore: 0,
+    gameHighScore: 0,
     gameStreak: 0,
     gameCorrectIndex: -1,
   };
+
+  const GAME_HIGH_SCORE_KEY = "artGalleryGameHighScore";
+
+  function getSavedHighScore() {
+    try {
+      const value = window.localStorage.getItem(GAME_HIGH_SCORE_KEY);
+      const parsed = Number.parseInt(value ?? "0", 10);
+      return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
+    } catch (error) {
+      return 0;
+    }
+  }
+
+  function saveHighScore(score) {
+    try {
+      const current = getSavedHighScore();
+      if (score > current) {
+        window.localStorage.setItem(GAME_HIGH_SCORE_KEY, String(score));
+      }
+    } catch (error) {
+      // Ignore storage failures (private mode / blocked storage).
+    }
+  }
 
   function setText(element, value) {
     if (element) element.textContent = value;
@@ -63,6 +88,13 @@ document.addEventListener("DOMContentLoaded", () => {
         .replace(/[^a-z0-9]+/g, "_")
         .replace(/^_+|_+$/g, "") || "artwork"
     );
+  }
+
+  function clearGameTimers() {
+    window.clearInterval(state.gameTimer);
+    window.clearTimeout(state.gameRoundTimer);
+    state.gameTimer = null;
+    state.gameRoundTimer = null;
   }
 
   function isFeaturedArt(art) {
@@ -443,6 +475,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateGameStats() {
     setText(document.getElementById("game-score"), String(state.gameScore));
     setText(
+      document.getElementById("game-high-score"),
+      String(state.gameHighScore),
+    );
+    setText(
       document.getElementById("game-time"),
       String(Math.max(0, state.gameTimeLeft)),
     );
@@ -463,8 +499,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     state.gameActive = false;
     state.gameLocked = false;
-    window.clearInterval(state.gameTimer);
-    state.gameTimer = null;
+    clearGameTimers();
+
+    saveHighScore(state.gameScore);
+    state.gameHighScore = Math.max(state.gameHighScore, getSavedHighScore());
+    updateGameStats();
 
     if (board) board.classList.add("is-hidden");
     if (messageEl)
@@ -478,59 +517,70 @@ document.addEventListener("DOMContentLoaded", () => {
     const messageEl = document.getElementById("game-message");
     if (!board || !messageEl) return;
 
+    window.clearTimeout(state.gameRoundTimer);
     board.innerHTML = "";
     board.classList.remove("is-hidden");
     state.gameLocked = false;
 
-    const baseSize = 4 + Math.floor(state.gameScore / 4);
     const maxSize =
       window.innerWidth < 576 ? 5 : window.innerWidth < 992 ? 6 : 7;
-    const size = Math.min(
-      maxSize,
-      baseSize + randomRange(0, Math.min(1, Math.floor(state.gameScore / 8))),
-    );
+    const baseSize = 4 + Math.floor(state.gameScore / 4);
+    const size = Math.min(maxSize, Math.max(4, baseSize));
     const tileCount = size * size;
-    const baseHue = randomRange(0, 359);
-    const baseSat = randomRange(46, 74);
-    const baseLight = randomRange(32, 58);
     const oddIndex = randomRange(0, tileCount - 1);
-    const variationType = randomRange(0, 2);
-    const subtleShift = Math.max(2, 12 - Math.floor(state.gameScore * 0.35));
+    const baseHue = randomRange(0, 359);
+    const baseSat = randomRange(48, 70);
+    const baseLight = randomRange(34, 56);
+    const baseHueShift = randomRange(8, 16);
+    const changeType = randomRange(0, 2);
+    const contrastStep = Math.max(2, 12 - Math.floor(state.gameScore * 0.45));
 
     state.gameCorrectIndex = oddIndex;
     board.style.gridTemplateColumns = `repeat(${size}, minmax(0, 1fr))`;
+
+    const baseColorA = hsl(baseHue, baseSat, baseLight);
+    const baseColorB = hsl(
+      (baseHue + baseHueShift) % 360,
+      Math.max(36, baseSat - 6),
+      Math.max(20, baseLight - 10),
+    );
+    const baseBackground = `linear-gradient(135deg, ${baseColorA}, ${baseColorB})`;
+    const oddColorA =
+      changeType === 0
+        ? hsl((baseHue + contrastStep + 360) % 360, baseSat, baseLight)
+        : changeType === 1
+          ? hsl(baseHue, Math.min(92, baseSat + contrastStep), baseLight)
+          : hsl(baseHue, baseSat, Math.min(82, baseLight + contrastStep));
+    const oddColorB =
+      changeType === 0
+        ? hsl(
+            (baseHue + baseHueShift + contrastStep + 360) % 360,
+            Math.max(36, baseSat - 6),
+            Math.max(20, baseLight - 10),
+          )
+        : changeType === 1
+          ? hsl(
+              (baseHue + baseHueShift) % 360,
+              Math.min(92, Math.max(30, baseSat - 3) + contrastStep),
+              Math.max(20, baseLight - 10),
+            )
+          : hsl(
+              (baseHue + baseHueShift) % 360,
+              Math.max(36, baseSat - 6),
+              Math.min(84, Math.max(20, baseLight - 10) + contrastStep),
+            );
+    const oddBackground = `linear-gradient(135deg, ${oddColorA}, ${oddColorB})`;
 
     for (let i = 0; i < tileCount; i += 1) {
       const tile = document.createElement("button");
       tile.type = "button";
       tile.className = "game-tile";
       tile.setAttribute("aria-label", "Paint tile");
-
-      const isOdd = i === oddIndex;
-      let hue = baseHue;
-      let sat = baseSat;
-      let light = baseLight;
-
-      if (isOdd) {
-        if (variationType === 0) hue = (baseHue + subtleShift + 360) % 360;
-        if (variationType === 1) sat = Math.min(96, baseSat + subtleShift);
-        if (variationType === 2) light = Math.min(84, baseLight + subtleShift);
-      } else {
-        hue = (hue + randomRange(-3, 3) + 360) % 360;
-        sat = Math.max(28, Math.min(88, sat + randomRange(-3, 3)));
-        light = Math.max(18, Math.min(80, light + randomRange(-3, 3)));
-      }
-
-      const c1 = hsl(hue, sat, light);
-      const c2 = hsl(
-        (hue + randomRange(4, 16)) % 360,
-        Math.max(36, sat - 8),
-        Math.max(20, light - 10),
-      );
-      tile.style.background = `linear-gradient(135deg, ${c1}, ${c2})`;
-      tile.style.boxShadow = isOdd
-        ? "inset 0 0 0 1px rgba(255,255,255,0.2)"
-        : "inset 0 0 0 1px rgba(255,255,255,0.08)";
+      tile.style.background = i === oddIndex ? oddBackground : baseBackground;
+      tile.style.boxShadow =
+        i === oddIndex
+          ? "inset 0 0 0 1px rgba(255,255,255,0.18), 0 0 0 1px rgba(212,175,55,0.10)"
+          : "inset 0 0 0 1px rgba(255,255,255,0.08)";
 
       const handleClick = () => {
         if (!state.gameActive || state.gameLocked) return;
@@ -539,22 +589,22 @@ document.addEventListener("DOMContentLoaded", () => {
           state.gameLocked = true;
           state.gameScore += 1;
           state.gameStreak += 1;
+          state.gameHighScore = Math.max(state.gameHighScore, state.gameScore);
           updateGameStats();
 
+          const nextDelay = Math.max(90, 240 - state.gameScore * 6);
           messageEl.textContent =
-            state.gameStreak >= 3
-              ? "Nice run. The patterns are getting subtler."
-              : "Good eye. The board shifts again.";
+            state.gameStreak >= 4
+              ? "Nice run. The next one gets tighter."
+              : "Good eye. Another board is coming.";
 
           tile.classList.add("correct");
-          window.setTimeout(
-            () => {
-              if (!state.gameActive) return;
-              buildGameBoard();
-              messageEl.textContent = "Keep going until the timer ends.";
-            },
-            Math.max(60, 120 - state.gameScore * 3),
-          );
+          window.clearTimeout(state.gameRoundTimer);
+          state.gameRoundTimer = window.setTimeout(() => {
+            if (!state.gameActive) return;
+            buildGameBoard();
+            messageEl.textContent = "Keep going until the timer ends.";
+          }, nextDelay);
         } else {
           state.gameStreak = 0;
           state.gameTimeLeft = Math.max(0, state.gameTimeLeft - 1);
@@ -594,14 +644,16 @@ document.addEventListener("DOMContentLoaded", () => {
       state.gameTimeLeft = 35;
     }
 
+    state.gameHighScore = getSavedHighScore();
     state.gameActive = true;
     state.gameLocked = false;
-    window.clearInterval(state.gameTimer);
+    clearGameTimers();
 
     if (messageEl)
       messageEl.textContent =
         "Find the slightly different tile before time runs out.";
 
+    updateGameStats();
     buildGameBoard();
 
     state.gameTimer = window.setInterval(() => {
@@ -629,8 +681,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
       miniGameModalElement.addEventListener("hidden.bs.modal", () => {
         state.gameActive = false;
-        window.clearInterval(state.gameTimer);
-        state.gameTimer = null;
+        clearGameTimers();
       });
     }
 
@@ -735,6 +786,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   updateStats();
+  state.gameHighScore = getSavedHighScore();
+  updateGameStats();
   buildFilters();
   renderGallery("all");
   setupRevealEffects();

@@ -12,7 +12,6 @@ window.artworksData = [
     year: "2026",
     medium: "Digital",
     downloadable: false,
-    featured: true,
   },
   {
     id: 2,
@@ -25,6 +24,7 @@ window.artworksData = [
     year: "2026",
     medium: "Digital",
     downloadable: false,
+    featured: true,
   },
   {
     id: 3,
@@ -37,19 +37,6 @@ window.artworksData = [
     year: "2026",
     medium: "Digital",
     downloadable: false,
-  },
-  {
-    id: 4,
-    title: "Ulab",
-    category: "Landscape",
-    imageThumb: asset("./assets/thumbs/thumb-Ulab.webp"),
-    imageFull: asset("./assets/img/Ulab.jpg"),
-    description:
-      "Illustration of University Laboratory College (ULAB), IER, DU.",
-    year: "2026",
-    medium: "Digital",
-    downloadable: true,
-    featured: true,
   },
   {
     id: 5,
@@ -72,5 +59,17 @@ window.artworksData = [
     year: "2026",
     medium: "Digital",
     downloadable: false,
+  },
+  {
+    id: 4,
+    title: "Ulab",
+    category: "Landscape",
+    imageThumb: asset("./assets/thumbs/thumb-Ulab.webp"),
+    imageFull: asset("./assets/img/Ulab.jpg"),
+    description:
+      "Illustration of University Laboratory College (ULAB), IER, DU.",
+    year: "2026",
+    medium: "Digital",
+    downloadable: true,
   },
 ];
