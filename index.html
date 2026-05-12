@@ -2,211 +2,307 @@
 <html lang="en" data-bs-theme="dark">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Art Gallery</title>
-    <link rel="icon" type="image/png" href="assets/icon.png" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Art Gallery</title>
+  <meta name="description" content="A curated showcase of digital artworks, studies, and experiments.">
+  <meta name="keywords" content="art, digital art, gallery, showcase">
+  <meta name="author" content="Fahim Foysal">
+  <meta name="copyright" content="Fahim Foysal">
 
-    <meta name="description" content="A collection of my digital artworks." />
-    <meta name="keywords" content="art, digital art, gallery, portfolio" />
-    <meta name="author" content="Fahim Foysal" />
-    <meta name="copyright" content="Fahim Foysal" />
+  <meta property="og:title" content="Art Gallery - A Digital Showcase">
+  <meta property="og:description" content="A curated showcase of digital artworks, studies, and experiments.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Art Gallery">
+  <meta property="og:url" content="https://fahimfoysal.pro.bd/art-gallery/">
 
-    <meta property="og:title" content="Art Gallery - A Collection of My Digital Artworks">
-    <meta property="og:description" content="A collection of my digital artworks.">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Art Gallery">
-    <meta property="og:url" content="https://fahimfoysal.pro.bd/art-gallery/">
-    <!-- <meta property="og:image" content="https://fahimfoysal.pro.bd/art-gallery/assets/og-image.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:locale" content="en_US"> -->
+  <link rel="icon" type="image/png" href="assets/icon.png">
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
-    <!-- Google Fonts: Inter for UI, Playfair Display for headings -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
-        rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,700&display=swap"
+    rel="stylesheet">
 
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="cursor.css">
-
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="cursor.css">
 </head>
 
 <body>
+  <div id="page-progress" aria-hidden="true"></div>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg fixed-top py-3" id="mainNav">
-        <div class="container">
-            <a class="navbar-brand" href="#hero">Art<span class="text-accent">Gallery</span></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="bi bi-list fs-1 text-light"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ms-auto my-2 my-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="#hero">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#arts">Arts</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <header id="hero" class="text-center">
-        <div class="container px-4 px-lg-5">
-            <div class="row gx-4 gx-lg-5 justify-content-center">
-                <div class="col-lg-8">
-                    <h1 class="mb-3">Visualizing the <span class="text-accent">Unseen</span></h1>
-                    <p class="lead fw-light mb-5">Welcome to my digital gallery. Exploring emotions through colors,
-                        shapes, and digital mediums.</p>
-                    <a class="btn btn-outline-light btn-lg rounded-pill px-5" href="#arts">View Gallery</a>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Arts Section -->
-    <section id="arts" class="section-padding">
-        <div class="container">
-            <h2 class="section-title">Selected Works</h2>
-
-            <!-- Filters -->
-            <div class="text-center mb-5" id="art-filters">
-                <button class="filter-btn active" data-filter="all">All</button>
-                <!-- Categories will be injected here by JS dynamically -->
-            </div>
-
-            <!-- Gallery Grid (Populated by JS) -->
-            <div class="masonry-grid" id="gallery-container">
-                <!-- Javascript will inject artwork cards here -->
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-5 mb-5 mb-lg-0">
-                    <!-- Placeholder for Artist Photo -->
-                    <img src="https://placehold.co/600x800/2a2a2a/d4af37?text=Artist+Image" alt="Artist Image"
-                        class="img-fluid rounded-4 shadow-lg">
-                </div>
-                <div class="col-lg-6 offset-lg-1">
-                    <h2 class="mb-4">About Me</h2>
-                    <p class="text-muted mb-4" style="line-height: 1.8;">
-                        I am just someone who likes digital painting and mixed media. My work often
-                        explores the intersection of nature, human emotion, and abstract forms.
-                        With a background in traditional fine arts, I bring classical techniques into the digital realm
-                        to create unique, evocative pieces.
-                    </p>
-                    <p class="text-muted mb-4" style="line-height: 1.8;">
-                        Every piece is a journey, an attempt to capture a fleeting feeling or a complex thought in a
-                        visual medium. I believe art should not just be seen, but felt.
-                    </p>
-                    <a href="#contact" class="btn btn-primary rounded-pill px-4 py-2 mt-2"
-                        style="background-color: var(--accent-color); border: none; color: #000; font-weight: 500;">Get
-                        in Touch</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact / Footer -->
-    <footer id="contact">
-        <div class="container text-center">
-            <h3 class="mb-4">Let's Connect</h3>
-            <p class="text-muted mb-4">Interested in a commission, purchasing a print, or just want to say hi?</p>
-
-            <a href="mailto:iamzero097@gmail.com"
-                class="fs-4 text-decoration-none text-light mb-4 d-block hover-accent">iamzero097@gmail.com</a>
-
-            <div class="d-flex justify-content-center gap-4 mb-5 mt-4">
-                <a href="#" class="social-link"><i class="bi bi-instagram"></i></a>
-                <a href="#" class="social-link"><i class="bi bi-twitter-x"></i></a>
-                <a href="#" class="social-link"><i class="bi bi-linkedin"></i></a>
-                <a href="https://github.com/fahim-foysal-097" class="social-link"><i class="bi bi-github"></i></a>
-            </div>
-
-            <p class="text-muted small mb-0">&copy; <span id="current-year"></span> Fahim. All Rights Reserved.
-            </p>
-        </div>
-    </footer>
-
-    <!-- Artwork Detail Modal -->
-    <div class="modal fade" id="artworkModal" tabindex="-1" aria-labelledby="artworkModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
-                <div class="modal-header border-0 pb-0">
-                    <button type="button" class="btn-close-custom ms-auto" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="bi bi-x-lg"></i>
-                    </button>
-                </div>
-                <div class="modal-body pt-0 px-4 pb-5">
-                    <div class="row align-items-center justify-content-center gx-5">
-                        <div class="col-lg-6 text-center text-lg-end mb-4 mb-lg-0">
-                            <!-- Image injected here. Auto-width prevents it pushing text too far. -->
-                            <img src="" id="modal-image" class="modal-img shadow"
-                                style="width: auto; max-width: 100%; max-height: 75vh;" alt="Artwork Detail">
-                        </div>
-                        <div class="col-lg-5 text-center text-lg-start">
-                            <h3 id="modal-title" class="mb-2">Artwork Title</h3>
-                            <p id="modal-category" class="text-accent text-uppercase small letter-spacing-1 mb-4">
-                                Category</p>
-                            <p id="modal-description" class="text-muted mb-4" style="line-height: 1.6;">
-                                Artwork description goes here.
-                            </p>
-                            <div class="d-flex gap-2 justify-content-center justify-content-lg-start">
-                                <span class="badge bg-secondary" id="modal-year">2024</span>
-                                <span class="badge bg-dark border border-secondary" id="modal-medium">Digital</span>
-                            </div>
-                            <!-- Download Button -->
-                            <div class="mt-5">
-                                <button id="download-btn" class="btn btn-outline-light w-100 rounded-pill py-2">
-                                    <i class="bi bi-download me-2"></i> Download Artwork
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <nav class="navbar navbar-expand-lg fixed-top py-3" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand" href="#hero" id="brand-link">Art<span class="text-accent">Gallery</span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="bi bi-list fs-1 text-light"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ms-auto my-2 my-lg-0">
+          <li class="nav-item"><a class="nav-link" href="#hero">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#arts">Arts</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+      </div>
     </div>
+  </nav>
 
-    <!-- Snackbar Element -->
-    <div id="snackbar">Notification Message</div>
+  <header id="hero" class="hero-section">
+    <div class="hero-orb hero-orb-a"></div>
+    <div class="hero-orb hero-orb-b"></div>
 
-    <!-- Custom Cursor -->
-    <div class="cursor-dot" data-cursor-dot></div>
-    <div class="cursor-outline" data-cursor-outline></div>
+    <div class="container position-relative">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6 hero-copy">
+          <span class="eyebrow mb-3 d-inline-flex align-items-center gap-2">
+            <i class="bi bi-stars"></i>
+            Digital showcase
+          </span>
+          <h1 class="mb-3">Visualizing the <span class="text-accent">Unseen</span></h1>
+          <p class="lead fw-light mb-4">
+            A clean place for selected artworks, experiments, and visual studies.
+            Open any piece, keep the image large, and browse without clutter.
+          </p>
 
-    <script src="cursor.js"></script>
+          <div class="d-flex flex-wrap gap-3 mb-4">
+            <a class="btn btn-light btn-lg rounded-pill px-4" href="#arts">Browse works</a>
+            <button id="open-game-btn" class="btn btn-outline-light btn-lg rounded-pill px-4" type="button">
+              <i class="bi bi-palette2 me-2"></i>Play art game
+            </button>
+          </div>
 
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        xintegrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"></script>
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <strong id="art-count">0</strong>
+              <span>works</span>
+            </div>
+            <div class="hero-stat">
+              <strong id="category-count">0</strong>
+              <span>categories</span>
+            </div>
+            <div class="hero-stat">
+              <strong id="downloadable-count">0</strong>
+              <span>downloadable</span>
+            </div>
+          </div>
+        </div>
 
-    <!-- Masonry & ImagesLoaded (Required for Proper Masonry) -->
-    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+        <div class="col-lg-6">
+          <div class="hero-showcase-card" aria-label="Featured artwork">
+            <div class="hero-showcase-top">
+              <div>
+                <h2 id="hero-spotlight-title" class="hero-showcase-title mb-0">Loading artwork…</h2>
+              </div>
+              <div class="d-flex gap-2 align-items-center">
+                <button id="open-spotlight-btn" class="icon-button" type="button" title="Open artwork"
+                  aria-label="Open artwork">
+                  <i class="bi bi-arrows-fullscreen"></i>
+                </button>
+                <button id="shuffle-spotlight" class="icon-button" type="button" title="Shuffle artwork"
+                  aria-label="Shuffle artwork">
+                  <i class="bi bi-shuffle"></i>
+                </button>
+              </div>
+            </div>
 
-    <!-- Vanilla Tilt JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+            <button id="hero-spotlight-trigger" class="hero-spotlight-trigger" type="button">
+              <img id="hero-spotlight-image" class="hero-spotlight-image" src="" alt="Featured artwork">
+            </button>
 
-    <script src="script.js"></script>
+            <div class="hero-showcase-caption">
+              <div class="d-flex flex-wrap gap-2 mb-3">
+                <span class="badge rounded-pill text-bg-dark border border-secondary"
+                  id="hero-spotlight-category">Category</span>
+                <span class="badge rounded-pill text-bg-dark border border-secondary"
+                  id="hero-spotlight-year">Year</span>
+                <span class="badge rounded-pill text-bg-dark border border-secondary"
+                  id="hero-spotlight-medium">Medium</span>
+              </div>
+              <p id="hero-spotlight-description" class="text-muted mb-0">Description will appear here.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section id="arts" class="section-padding">
+    <div class="container">
+      <div class="section-heading text-center">
+        <span class="eyebrow mb-3 d-inline-flex align-items-center gap-2">
+          <i class="bi bi-easel2"></i>
+          Selected works
+        </span>
+        <h2 class="section-title mb-3">Gallery</h2>
+        <p class="section-subtitle mx-auto">
+          Filter by category, then open any piece in a full-size viewer.
+        </p>
+      </div>
+
+      <div class="text-center mb-4" id="art-filters" aria-label="Artwork filters">
+        <button class="filter-btn active" data-filter="all" type="button">All</button>
+      </div>
+
+      <div class="masonry-grid" id="gallery-container" aria-live="polite"></div>
+      <div id="gallery-empty" class="empty-state d-none">
+        <i class="bi bi-image-alt"></i>
+        <h3 class="mt-3 mb-2">Nothing here yet</h3>
+        <p class="mb-0 text-muted">Add artwork entries in <code>artworks.js</code> and they will appear automatically.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="about-section section-padding">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-5">
+          <div class="about-frame">
+            <img src="https://placehold.co/900x1100/1d1d1d/d4af37?text=Artist+Image" alt="Artist image"
+              class="img-fluid about-image">
+          </div>
+        </div>
+        <div class="col-lg-6 offset-lg-1">
+          <span class="eyebrow mb-3 d-inline-flex align-items-center gap-2">
+            <i class="bi bi-person-badge"></i>
+            About the showcase
+          </span>
+          <h2 class="mb-4">Built to present the work cleanly.</h2>
+          <p class="text-muted mb-4">
+            This site is focused on the artworks themselves: strong presentation, easy browsing, full-screen viewing,
+            and small details that make the experience feel finished.
+          </p>
+          <p class="text-muted mb-0">
+            The layout keeps the masonry structure and the tilt effect, but tightens spacing, improves readability,
+            adds a larger hero viewer, better feedback toasts, a progress bar, and a small art game for extra
+            personality.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact" class="footer-section">
+    <div class="container text-center">
+      <h3 class="mb-3">Let's Connect</h3>
+      <p class="text-muted mb-4">For feedback, commissions, or general contact.</p>
+
+      <a href="mailto:iamzero097@gmail.com" class="fs-4 text-decoration-none text-light mb-4 d-block hover-accent">
+        iamzero097@gmail.com
+      </a>
+
+      <div class="d-flex justify-content-center gap-4 mb-5 mt-4">
+        <a href="#" class="social-link" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+        <a href="#" class="social-link" aria-label="X"><i class="bi bi-twitter-x"></i></a>
+        <a href="#" class="social-link" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+        <a href="https://github.com/fahim-foysal-097" class="social-link" aria-label="GitHub"><i
+            class="bi bi-github"></i></a>
+      </div>
+
+      <p class="text-muted small mb-0">&copy; <span id="current-year"></span> Fahim. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <div class="modal fade" id="artworkModal" tabindex="-1" aria-labelledby="artworkModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content artwork-modal">
+        <div class="modal-header border-0 pb-0">
+          <button type="button" class="btn-close-custom ms-auto" data-bs-dismiss="modal" aria-label="Close">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+        <div class="modal-body pt-0 px-4 px-lg-5 pb-5">
+          <div class="row align-items-center justify-content-center gx-5 gy-4">
+            <div class="col-lg-6">
+              <div class="modal-art-frame">
+                <img src="" id="modal-image" class="modal-img" alt="Artwork">
+              </div>
+            </div>
+            <div class="col-lg-5">
+              <div class="d-flex flex-wrap gap-2 mb-3">
+                <span class="badge rounded-pill text-bg-dark border border-secondary"
+                  id="modal-category">Category</span>
+                <span class="badge rounded-pill text-bg-dark border border-secondary" id="modal-year">Year</span>
+                <span class="badge rounded-pill text-bg-dark border border-secondary" id="modal-medium">Medium</span>
+              </div>
+              <h3 id="modal-title" class="mb-3">Artwork Title</h3>
+              <p id="modal-description" class="text-muted mb-4" style="line-height: 1.75;">Artwork description goes
+                here.</p>
+
+              <div class="download-panel">
+                <button id="download-btn" class="download-btn btn btn-outline-light w-100 rounded-pill py-3"
+                  type="button">
+                  <i class="bi bi-download me-2"></i><span class="download-btn-label">Download artwork</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="miniGameModal" tabindex="-1" aria-labelledby="miniGameLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content game-modal">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title" id="miniGameLabel">Color Hunt</h5>
+          <button type="button" class="btn-close-custom ms-auto" data-bs-dismiss="modal" aria-label="Close">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+        <div class="modal-body pt-0 px-4 px-lg-5 pb-5">
+          <p class="text-muted mb-4">
+            Find the tile that looks slightly different. The board regenerates forever until the timer ends.
+          </p>
+
+          <div class="game-stats mb-3">
+            <div class="game-stat"><strong id="game-score">0</strong><span>score</span></div>
+            <div class="game-stat"><strong id="game-time">35</strong><span>seconds</span></div>
+            <div class="game-stat"><strong id="game-streak">0</strong><span>streak</span></div>
+          </div>
+
+          <div class="game-progress mb-3" aria-hidden="true">
+            <div id="game-progress-bar"></div>
+          </div>
+
+          <div id="game-board" class="game-board" aria-label="Color hunt game board"></div>
+
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mt-4">
+            <small id="game-message" class="text-muted">Click the odd tile to keep the run alive.</small>
+            <button id="game-restart" class="btn btn-light rounded-pill px-4" type="button">Restart game</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="snackbar" class="app-toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <button id="back-to-top" class="fab-top" type="button" aria-label="Back to top">
+    <i class="bi bi-arrow-up"></i>
+  </button>
+
+  <div class="cursor-dot" data-cursor-dot></div>
+  <div class="cursor-outline" data-cursor-outline></div>
+
+  <script src="cursor.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+  <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+
+  <script src="artworks.js"></script>
+  <script src="script.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,76 @@
+const asset = (path) => new URL(path, window.location.href).href;
+
+window.artworksData = [
+  {
+    id: 1,
+    title: "Block",
+    category: "Abstract",
+    imageThumb: asset("./assets/thumbs/thumb-Block.webp"),
+    imageFull: asset("./assets/img/Block.jpg"),
+    description:
+      "An exploration of form and color, this piece uses simple geometric shapes to create a visually striking composition.",
+    year: "2026",
+    medium: "Digital",
+    downloadable: false,
+    featured: true,
+  },
+  {
+    id: 2,
+    title: "Block Paint",
+    category: "Abstract",
+    imageThumb: asset("./assets/thumbs/thumb-Block-paint.webp"),
+    imageFull: asset("./assets/img/Block-paint.jpg"),
+    description:
+      "Same as the original, but done with oil-paint-inspired texture and warmer surface treatment.",
+    year: "2026",
+    medium: "Digital",
+    downloadable: false,
+  },
+  {
+    id: 3,
+    title: "Block Tree",
+    category: "Abstract",
+    imageThumb: asset("./assets/thumbs/thumb-Block-tree.webp"),
+    imageFull: asset("./assets/img/Block-tree.jpg"),
+    description:
+      "A simple yet elegant composition of a tree with block elements.",
+    year: "2026",
+    medium: "Digital",
+    downloadable: false,
+  },
+  {
+    id: 4,
+    title: "Ulab",
+    category: "Landscape",
+    imageThumb: asset("./assets/thumbs/thumb-Ulab.webp"),
+    imageFull: asset("./assets/img/Ulab.jpg"),
+    description:
+      "Illustration of University Laboratory College (ULAB), IER, DU.",
+    year: "2026",
+    medium: "Digital",
+    downloadable: true,
+    featured: true,
+  },
+  {
+    id: 5,
+    title: "Block Blur",
+    category: "Abstract",
+    imageThumb: asset("./assets/thumbs/thumb-Block-blur.webp"),
+    imageFull: asset("./assets/img/Block-blur.jpg"),
+    description: "Same as the original, but with a blurred effect.",
+    year: "2026",
+    medium: "Digital",
+    downloadable: false,
+  },
+  {
+    id: 6,
+    title: "Block Tree Blur",
+    category: "Abstract",
+    imageThumb: asset("./assets/thumbs/thumb-Block-tree-blur.webp"),
+    imageFull: asset("./assets/img/Block-tree-blur.jpg"),
+    description: "Same as the original, but with a blurred effect.",
+    year: "2026",
+    medium: "Digital",
+    downloadable: false,
+  },
+];
