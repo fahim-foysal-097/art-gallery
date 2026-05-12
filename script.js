@@ -403,70 +403,112 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderGallery(filter = "all") {
     if (!galleryContainer) return;
 
-    galleryContainer.style.opacity = "0";
+    galleryContainer.classList.remove("ready");
 
-    window.setTimeout(() => {
-      galleryContainer.innerHTML = "";
+    destroyMasonry();
 
-      const filteredArt =
-        filter === "all"
-          ? artworks
-          : artworks.filter((art) => art.category === filter);
+    galleryContainer.innerHTML = `
+    <div class="grid-sizer"></div>
+  `;
 
-      if (!filteredArt.length) {
-        if (galleryEmpty) galleryEmpty.classList.remove("d-none");
-        galleryContainer.style.opacity = "1";
-        return;
-      }
+    const filteredArt =
+      filter === "all"
+        ? artworks
+        : artworks.filter((art) => art.category === filter);
 
-      if (galleryEmpty) galleryEmpty.classList.add("d-none");
+    if (!filteredArt.length) {
+      if (galleryEmpty) galleryEmpty.classList.remove("d-none");
+      galleryContainer.classList.add("ready");
+      return;
+    }
 
-      filteredArt.forEach((art) => {
-        const itemWrapper = document.createElement("div");
-        itemWrapper.className = "masonry-item";
+    if (galleryEmpty) {
+      galleryEmpty.classList.add("d-none");
+    }
 
-        const statusHtml = art.downloadable
-          ? `<span class="gallery-status"><i class="bi bi-download"></i> Downloadable</span>`
-          : `<span class="gallery-status view-only"><i class="bi bi-lock-fill"></i> View only</span>`;
+    filteredArt.forEach((art) => {
+      const itemWrapper = document.createElement("div");
+      itemWrapper.className = "masonry-item";
 
-        itemWrapper.innerHTML = `
-          <div class="gallery-item" data-tilt data-tilt-max="10" data-tilt-speed="450" data-tilt-glare="true" data-tilt-max-glare="0.18">
-            <div class="gallery-img-container">
-              <img src="${art.imageThumb}" alt="${art.title}" class="gallery-img" loading="lazy" decoding="async">
-            </div>
-            <div class="gallery-overlay">
-              <p class="gallery-category">${art.category}</p>
-              <h3 class="gallery-title">${art.title}</h3>
-              ${statusHtml}
-            </div>
-          </div>
-        `;
+      const statusHtml = art.downloadable
+        ? `
+        <span class="gallery-status">
+          <i class="bi bi-download"></i>
+          Downloadable
+        </span>
+      `
+        : `
+        <span class="gallery-status view-only">
+          <i class="bi bi-lock-fill"></i>
+          View only
+        </span>
+      `;
 
-        const card = itemWrapper.querySelector(".gallery-item");
-        card.addEventListener("click", () => openModal(art));
+      itemWrapper.innerHTML = `
+      <div class="gallery-item">
+        <div class="gallery-img-container">
+          <img
+            src="${art.imageThumb}"
+            alt="${art.title}"
+            class="gallery-img"
+            loading="lazy"
+            decoding="async"
+          >
+        </div>
 
-        galleryContainer.appendChild(itemWrapper);
+        <div class="gallery-overlay">
+          <p class="gallery-category">${art.category}</p>
+          <h3 class="gallery-title">${art.title}</h3>
+          ${statusHtml}
+        </div>
+      </div>
+    `;
+
+      const card = itemWrapper.querySelector(".gallery-item");
+
+      card.addEventListener("click", () => {
+        openModal(art);
       });
 
-      destroyMasonry();
+      galleryContainer.appendChild(itemWrapper);
+    });
 
-      const finishLayout = () => {
-        state.masonry = new Masonry(galleryContainer, {
-          itemSelector: ".masonry-item",
-          percentPosition: true,
-          transitionDuration: "0.35s",
+    const initializeMasonry = () => {
+      state.masonry = new Masonry(galleryContainer, {
+        itemSelector: ".masonry-item",
+        columnWidth: ".grid-sizer",
+        percentPosition: true,
+        gutter: 0,
+        transitionDuration: "0.3s",
+      });
+
+      state.masonry.layout();
+
+      requestAnimationFrame(() => {
+        state.masonry.layout();
+
+        setTimeout(() => {
+          state.masonry.layout();
+          galleryContainer.classList.add("ready");
+        }, 50);
+      });
+
+      initTilt();
+    };
+
+    if (typeof imagesLoaded !== "undefined") {
+      imagesLoaded(galleryContainer, () => {
+        initializeMasonry();
+
+        imagesLoaded(galleryContainer).on("progress", () => {
+          if (state.masonry) {
+            state.masonry.layout();
+          }
         });
-
-        initTilt();
-        galleryContainer.style.opacity = "1";
-      };
-
-      if (typeof imagesLoaded !== "undefined") {
-        imagesLoaded(galleryContainer, finishLayout);
-      } else {
-        finishLayout();
-      }
-    }, 160);
+      });
+    } else {
+      initializeMasonry();
+    }
   }
 
   function openModal(art) {
@@ -868,7 +910,17 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", updateProgressBar, { passive: true });
+    window.addEventListener(
+      "resize",
+      () => {
+        updateProgressBar();
+
+        if (state.masonry) {
+          state.masonry.layout();
+        }
+      },
+      { passive: true },
+    );
     onScroll();
   }
 
