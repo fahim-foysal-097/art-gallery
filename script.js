@@ -25,6 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const openSpotlightBtn = document.getElementById("open-spotlight-btn");
   const shuffleSpotlightBtn = document.getElementById("shuffle-spotlight");
   const openGameBtn = document.getElementById("open-game-btn");
+  const musicToggleBtn = document.getElementById("music-toggle");
+  const bgMusic = document.getElementById("bg-music");
   const brandLink = document.getElementById("brand-link");
   const backToTopBtn = document.getElementById("back-to-top");
   const gameProgressBar = document.getElementById("game-progress-bar");
@@ -52,9 +54,13 @@ document.addEventListener("DOMContentLoaded", () => {
     gameHighScore: 0,
     gameStreak: 0,
     gameCorrectIndex: -1,
+    musicLoaded: false,
+    musicPlaying: false,
+    musicSourceIndex: 0,
   };
 
   const GAME_HIGH_SCORE_KEY = "artGalleryGameHighScore";
+  const MUSIC_SOURCES = ["./assets/music/music.mp3"];
 
   function getSavedHighScore() {
     try {
@@ -128,6 +134,99 @@ document.addEventListener("DOMContentLoaded", () => {
     state.toastTimer = window.setTimeout(() => {
       snackbar.classList.remove("show");
     }, 3350);
+  }
+
+  function updateMusicButton() {
+    if (!musicToggleBtn) return;
+
+    const icon = musicToggleBtn.querySelector("i");
+    const playing = state.musicPlaying;
+
+    musicToggleBtn.classList.toggle("is-active", playing);
+    musicToggleBtn.setAttribute("aria-pressed", String(playing));
+    musicToggleBtn.setAttribute(
+      "title",
+      playing ? "Pause music" : "Play music",
+    );
+    musicToggleBtn.setAttribute(
+      "aria-label",
+      playing ? "Pause music" : "Play music",
+    );
+
+    if (icon) {
+      icon.className = playing ? "bi bi-pause-fill" : "bi bi-music-note-beamed";
+    }
+  }
+
+  function getMusicSource() {
+    return MUSIC_SOURCES[state.musicSourceIndex] || MUSIC_SOURCES[0];
+  }
+
+  function ensureMusicAudio() {
+    if (!bgMusic) return null;
+
+    if (!state.musicLoaded) {
+      bgMusic.preload = "none";
+      bgMusic.loop = true;
+      bgMusic.volume = 0.6;
+      bgMusic.src = getMusicSource();
+      state.musicLoaded = true;
+
+      bgMusic.addEventListener("play", () => {
+        state.musicPlaying = true;
+        updateMusicButton();
+      });
+
+      bgMusic.addEventListener("pause", () => {
+        state.musicPlaying = false;
+        updateMusicButton();
+      });
+
+      bgMusic.addEventListener("ended", () => {
+        state.musicPlaying = false;
+        updateMusicButton();
+      });
+
+      bgMusic.addEventListener("error", () => {
+        const nextIndex = state.musicSourceIndex + 1;
+        if (nextIndex < MUSIC_SOURCES.length) {
+          state.musicSourceIndex = nextIndex;
+          bgMusic.src = getMusicSource();
+          bgMusic.load();
+          return;
+        }
+
+        state.musicPlaying = false;
+        updateMusicButton();
+        showToast(
+          "No music file found in assets/music/ to enable playback.",
+          "error",
+        );
+      });
+    }
+
+    return bgMusic;
+  }
+
+  async function toggleMusic() {
+    const audio = ensureMusicAudio();
+    if (!audio) return;
+
+    if (state.musicPlaying) {
+      audio.pause();
+      return;
+    }
+
+    try {
+      audio.load();
+      await audio.play();
+      state.musicPlaying = true;
+      updateMusicButton();
+    } catch (error) {
+      state.musicPlaying = false;
+      updateMusicButton();
+      showToast("Music could not start. Click the button again.", "error");
+    }
   }
 
   function updateStats() {
@@ -528,59 +627,46 @@ document.addEventListener("DOMContentLoaded", () => {
     const size = Math.min(maxSize, Math.max(4, baseSize));
     const tileCount = size * size;
     const oddIndex = randomRange(0, tileCount - 1);
+
     const baseHue = randomRange(0, 359);
-    const baseSat = randomRange(48, 70);
-    const baseLight = randomRange(34, 56);
-    const baseHueShift = randomRange(8, 16);
-    const changeType = randomRange(0, 2);
-    const contrastStep = Math.max(2, 12 - Math.floor(state.gameScore * 0.45));
+    const baseSat = randomRange(18, 28);
+    const baseLight = randomRange(20, 30);
+    const contrast = Math.max(2, 9 - Math.floor(state.gameScore * 0.35));
+    const mode = randomRange(0, 2);
 
     state.gameCorrectIndex = oddIndex;
     board.style.gridTemplateColumns = `repeat(${size}, minmax(0, 1fr))`;
 
-    const baseColorA = hsl(baseHue, baseSat, baseLight);
-    const baseColorB = hsl(
-      (baseHue + baseHueShift) % 360,
-      Math.max(36, baseSat - 6),
-      Math.max(20, baseLight - 10),
+    const baseColor = hsl(baseHue, baseSat, baseLight);
+    const baseColorDeep = hsl(
+      baseHue,
+      Math.max(12, baseSat - 4),
+      Math.max(12, baseLight - 7),
     );
-    const baseBackground = `linear-gradient(135deg, ${baseColorA}, ${baseColorB})`;
-    const oddColorA =
-      changeType === 0
-        ? hsl((baseHue + contrastStep + 360) % 360, baseSat, baseLight)
-        : changeType === 1
-          ? hsl(baseHue, Math.min(92, baseSat + contrastStep), baseLight)
-          : hsl(baseHue, baseSat, Math.min(82, baseLight + contrastStep));
-    const oddColorB =
-      changeType === 0
-        ? hsl(
-            (baseHue + baseHueShift + contrastStep + 360) % 360,
-            Math.max(36, baseSat - 6),
-            Math.max(20, baseLight - 10),
-          )
-        : changeType === 1
-          ? hsl(
-              (baseHue + baseHueShift) % 360,
-              Math.min(92, Math.max(30, baseSat - 3) + contrastStep),
-              Math.max(20, baseLight - 10),
-            )
-          : hsl(
-              (baseHue + baseHueShift) % 360,
-              Math.max(36, baseSat - 6),
-              Math.min(84, Math.max(20, baseLight - 10) + contrastStep),
-            );
-    const oddBackground = `linear-gradient(135deg, ${oddColorA}, ${oddColorB})`;
+    const oddColor =
+      mode === 0
+        ? hsl((baseHue + contrast + 360) % 360, baseSat, baseLight)
+        : mode === 1
+          ? hsl(baseHue, Math.min(40, baseSat + contrast), baseLight)
+          : hsl(baseHue, baseSat, Math.min(48, baseLight + contrast));
 
     for (let i = 0; i < tileCount; i += 1) {
       const tile = document.createElement("button");
       tile.type = "button";
       tile.className = "game-tile";
-      tile.setAttribute("aria-label", "Paint tile");
-      tile.style.background = i === oddIndex ? oddBackground : baseBackground;
-      tile.style.boxShadow =
+      tile.setAttribute(
+        "aria-label",
+        i === oddIndex ? "Different tile" : "Tile",
+      );
+      tile.dataset.correct = String(i === oddIndex);
+
+      tile.style.background =
         i === oddIndex
-          ? "inset 0 0 0 1px rgba(255,255,255,0.18), 0 0 0 1px rgba(212,175,55,0.10)"
-          : "inset 0 0 0 1px rgba(255,255,255,0.08)";
+          ? `linear-gradient(180deg, ${oddColor}, ${baseColorDeep})`
+          : `linear-gradient(180deg, ${baseColor}, ${baseColorDeep})`;
+
+      tile.style.borderColor = "rgba(255,255,255,0.06)";
+      tile.style.boxShadow = "inset 0 0 0 1px rgba(0,0,0,0.08)";
 
       const handleClick = () => {
         if (!state.gameActive || state.gameLocked) return;
@@ -590,13 +676,14 @@ document.addEventListener("DOMContentLoaded", () => {
           state.gameScore += 1;
           state.gameStreak += 1;
           state.gameHighScore = Math.max(state.gameHighScore, state.gameScore);
+          saveHighScore(state.gameHighScore);
           updateGameStats();
 
-          const nextDelay = Math.max(90, 240 - state.gameScore * 6);
+          const nextDelay = Math.max(85, 240 - state.gameScore * 6);
           messageEl.textContent =
             state.gameStreak >= 4
-              ? "Nice run. The next one gets tighter."
-              : "Good eye. Another board is coming.";
+              ? "Good eye. The next board is a little faster."
+              : "Correct. Another board is coming.";
 
           tile.classList.add("correct");
           window.clearTimeout(state.gameRoundTimer);
@@ -633,7 +720,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateGameStats();
   }
-
   function startGame(reset = false) {
     const messageEl = document.getElementById("game-message");
 
@@ -719,6 +805,11 @@ document.addEventListener("DOMContentLoaded", () => {
       openSpotlightBtn.addEventListener("click", () => {
         if (state.activeSpotlight) openModal(state.activeSpotlight);
       });
+    }
+
+    if (musicToggleBtn) {
+      musicToggleBtn.addEventListener("click", toggleMusic);
+      updateMusicButton();
     }
 
     if (shuffleSpotlightBtn) {

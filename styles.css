@@ -322,6 +322,20 @@ code {
   border-color: rgba(212, 175, 55, 0.35);
 }
 
+.icon-button.is-active {
+  background: rgba(212, 175, 55, 0.14);
+  border-color: rgba(212, 175, 55, 0.45);
+  color: var(--accent-color);
+  box-shadow:
+    0 0 0 1px rgba(212, 175, 55, 0.12),
+    0 10px 22px rgba(0, 0, 0, 0.24);
+}
+
+.icon-button.is-active:hover {
+  background: rgba(212, 175, 55, 0.18);
+  border-color: rgba(212, 175, 55, 0.55);
+}
+
 .hero-spotlight-trigger {
   display: block;
   width: 100%;
