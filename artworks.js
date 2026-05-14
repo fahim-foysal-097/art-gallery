@@ -72,4 +72,16 @@ window.artworksData = [
     medium: "Digital",
     downloadable: true,
   },
+  {
+    id: 7,
+    title: "Black Door",
+    category: "Landscape",
+    imageThumb: asset("./assets/thumbs/thumb-black-door.webp"),
+    imageFull: asset("./assets/img/black-door.jpg"),
+    description:
+      "A mysterious black door standing alone in a desolate landscape, evoking a sense of intrigue and curiosity.",
+    year: "2026",
+    medium: "Digital",
+    downloadable: true,
+  },
 ];
