@@ -828,12 +828,12 @@ document.addEventListener("DOMContentLoaded", () => {
       setHeroSpotlight(initial);
     } else {
       setText(heroTitle, "No artwork yet");
-      setText(heroCategory, "Add entries in artworks.js");
+      setText(heroCategory, "No Artwork Available");
       setText(heroYear, "—");
       setText(heroMedium, "—");
       setText(
         heroDescription,
-        "The hero spotlight will automatically use the first featured artwork when you add one.",
+        "Art will appear here once added to the collection.",
       );
     }
 
